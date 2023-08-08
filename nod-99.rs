@@ -474,7 +474,7 @@ fn main() {
         }
         autobots.genetic_generation(15, 3, 4, 3, 5, 0.01, 0.5);
         */
-        let decp_inversion = results[1].iter().map(|f| 1.0 / f.clone() as f64).collect();
+        let decp_inversion = results[1].iter().map(|f| -1.0 * f.clone() as f64).collect();
         decepticons.reorder(decp_inversion);
         if i == 199 {
             let mut j = 0;
@@ -488,10 +488,10 @@ fn main() {
         if i % 10 == 0 {
             let mut top_loss: f64 = 0.0;
             for j in 0..5 {
-                top_loss += decepticons.agents[j].score;
+                top_loss -= decepticons.agents[j].score;
             }
 
-            println!("Generation {}\nDecp top 5 avg loss rate: {}", i, top_loss / 5.0 / results[1].len() as f64 / 150.0);
+            println!("Generation {}\nDecp top 5 avg loss rate: {}", i, top_loss / results[0].len() as f64 / 5.0 / 150.0);
             println!("Time Since start: {:?}",time::Instant::now().duration_since(start));
         }
     }
@@ -506,9 +506,9 @@ fn main() {
     };
     let mut top_loss: f64 = 0.0;
     for j in 0..5 {
-        top_loss += decepticons.agents[j].score;
+        top_loss -= decepticons.agents[j].score;
     }
-    println!("Decp top 5 avg loss rate: {}", top_loss / 5.0 / results[1].len() as f64 / 150.0);
+    println!("Decp top 5 avg loss rate: {}", top_loss / 5.0 / results[0].len() as f64 / 150.0);
     println!("The autobots lost a total of {} games, the decpticons lost a total of {}", auto_loss, decp_loss);
     println!("The total loss vectors\nAutobots:\n{:?}\nDecepticons:\n{:?}", results[0], results[1]);
     println!("Time Since start: {:?}",time::Instant::now().duration_since(start));
